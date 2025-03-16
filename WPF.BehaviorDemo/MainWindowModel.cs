@@ -5,20 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using WPF.BehaviorDemo.ComponentViews;
 using WPF.BehaviorDemo.Models;
+using WPF.BehaviorDemo.ViewComponents;
 
 namespace WPF.BehaviorDemo
 {
   public  class MainWindowModel
     {
-        public ObservableCollection<ShapeModel> Shapes { get; set; } = [];
 
+        public ObservableCollection<string> ViewComponents { get; set; }
         public MainWindowModel()
         {
-            Shapes.Add(new ShapeModel { ShapeName="Ellipse", ShapeColor= Brushes.Purple, ShapeType= ShapeType.Ellipse });
-            Shapes.Add(new ShapeModel { ShapeName = "Rectangle", ShapeColor = Brushes.Blue, ShapeType = ShapeType.Rectangle });
-            Shapes.Add(new ShapeModel { ShapeName="Triangle", ShapeColor= Brushes.Red, ShapeType= ShapeType.Triangle });
-
+            ViewComponentManager.RegisterViewComponent("按钮",typeof(ButtonComponentView));
+            ViewComponentManager.RegisterViewComponent("表格", typeof(TableComponentView));
+            ViewComponentManager.RegisterViewComponent("列表", typeof(ListComponentView));
+            ViewComponents = new ObservableCollection<string>(ViewComponentManager.GetViewComponentDescriptions().Keys);
         }
     }
 }

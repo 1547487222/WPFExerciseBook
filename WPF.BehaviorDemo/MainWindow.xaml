@@ -13,19 +13,19 @@
     mc:Ignorable="d">
     <Grid>
         <DockPanel LastChildFill="True">
-            <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Shapes}">
+            <ListBox DockPanel.Dock="Left" ItemsSource="{Binding ViewComponents}">
                 <i:Interaction.Behaviors>
-                    <behaviors:DoDropbehavior />
+                    <behaviors:DoDropbehavior/>
                 </i:Interaction.Behaviors>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock FontSize="20" Text="{Binding ShapeName}" />
+                        <TextBlock FontSize="20" Text="{Binding}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
             <Canvas Background="White">
                 <i:Interaction.Behaviors>
-                    <behaviors:CanvasDragBehavior />
+                    <behaviors:ViewComponentCanvasDragBehavior />
                 </i:Interaction.Behaviors>
             </Canvas>
         </DockPanel>
