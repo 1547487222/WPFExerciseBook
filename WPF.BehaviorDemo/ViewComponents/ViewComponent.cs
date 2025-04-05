@@ -10,5 +10,14 @@ namespace WPF.BehaviorDemo.ViewComponents
     {
         public Guid  ComponentId  { get; set; }
         public IComponentView  View { get; set; }
+
+        public IComponentViewModel ViewModel { get; set; }
+
+
+        public void InitializeComponent()
+        {
+            ViewModel.InitializeComponent();
+            View.DataContext = ViewModel;
+        }
     }
 }

@@ -8,6 +8,6 @@ namespace WPF.BehaviorDemo.ViewComponents
 {
     public interface IComponentView
     {
-
+        object DataContext { get; set; }
     }
 }

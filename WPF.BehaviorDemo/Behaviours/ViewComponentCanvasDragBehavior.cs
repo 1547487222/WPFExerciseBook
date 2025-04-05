@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using WPF.BehaviorDemo.Controls;
 using WPF.BehaviorDemo.ViewComponents;
 
 namespace WPF.BehaviorDemo.Behaviours
@@ -16,31 +17,28 @@ namespace WPF.BehaviorDemo.Behaviours
     {
         public override UIElement DropElement(string data)
         {
-            var viewComponent= ViewComponentManager.CrateViewComponent(data);
-            var container = new Grid();
-            var iElement= (UIElement)viewComponent.View;
-            iElement.IsHitTestVisible = false;
-            container.Children.Add(iElement);
-
-            var mask = new Border
-            {
-                Background = new SolidColorBrush(Colors.LightGray),
-                Opacity = 0.5,
-            };
-            container.Children.Add(mask);
-            var thumb =new Thumb()
-            {
-                Cursor = Cursors.SizeAll,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom,
-            };
-            thumb.DragDelta += (sender, e) =>
-            {
-                container.Width = Math.Max(container.ActualWidth + e.HorizontalChange, 50);
-                container.Height = Math.Max(container.ActualHeight + e.VerticalChange, 50);
-            };
-            container.Children.Add(thumb);
+            var container = new ViewComponentControl(data);
+            container.UpdateMaskContextMenu(MaskContextMenu);
             return container;
         }
+
+
+
+
+
+
+
+        public ContextMenu  MaskContextMenu 
+        {
+            get { return (ContextMenu)GetValue(MaskContextMenuProperty); }
+            set { SetValue(MaskContextMenuProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaskContextMenuProperty =
+            DependencyProperty.Register("MyProperty", typeof(ContextMenu), typeof(ViewComponentCanvasDragBehavior), new PropertyMetadata(null));
+
+
+
     }
 }

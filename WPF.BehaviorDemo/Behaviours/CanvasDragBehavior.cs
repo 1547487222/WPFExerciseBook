@@ -57,8 +57,6 @@ namespace WPF.BehaviorDemo.Behaviours
                 this.AssociatedObject.Children.Add(uIElement);
                 Canvas.SetLeft(uIElement, pos.X);
                 Canvas.SetTop(uIElement, pos.Y);
-                var behaviors = Interaction.GetBehaviors(uIElement);
-                behaviors.Add(new CanvasElementMoveBehavior());
             }
             e.Effects = DragDropEffects.None;
             e.Handled = true;

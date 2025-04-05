@@ -25,30 +25,6 @@ namespace WPF.BehaviorDemo.ComponentViews
         public TableComponentView()
         {
             InitializeComponent();
-            DataContext = this;
-
-
-        }
-
-
-        public ObservableCollection<TableItem> TableData { get; set; } = new ObservableCollection<TableItem>() 
-        {
-            new TableItem(){Name="张三",Age="18",Sex="男",Score=100 },
-            new TableItem(){Name="李四",Age="19",Sex="男",Score=90 },
-            new TableItem(){Name="王五",Age="20",Sex="男",Score=80 },
-            new TableItem(){Name="赵六",Age="21",Sex="男",Score=70 },
-            new TableItem(){Name="钱七",Age="22",Sex="男",Score=60 },
-        };
-
-        public class TableItem
-        {
-            public string Name { get; set; }
-
-            public string Age { get; set; }
-
-            public string Sex { get; set; }
-
-            public double Score { get; set; }
         }
     }
 }

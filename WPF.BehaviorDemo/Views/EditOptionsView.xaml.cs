@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPF.BehaviorDemo.ViewComponents;
 
-namespace WPF.BehaviorDemo.ComponentViews
+namespace WPF.BehaviorDemo.Views
 {
     /// <summary>
-    /// ListComponentView.xaml 的交互逻辑
+    /// EditOptionsView.xaml 的交互逻辑
     /// </summary>
-    public partial class ListComponentView : IComponentView
+    public partial class EditOptionsView : UserControl
     {
-        public ListComponentView()
+        public EditOptionsView()
         {
             InitializeComponent();
         }

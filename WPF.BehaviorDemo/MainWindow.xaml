@@ -13,9 +13,13 @@
     mc:Ignorable="d">
     <Grid>
         <DockPanel LastChildFill="True">
+            <ToolBar DockPanel.Dock="Top">
+                <Button Click="OpenEdit_Click" Content="打开编辑" />
+                <Button Click="CloseEdit_Click" Content="关闭编辑" />
+            </ToolBar>
             <ListBox DockPanel.Dock="Left" ItemsSource="{Binding ViewComponents}">
                 <i:Interaction.Behaviors>
-                    <behaviors:DoDropbehavior/>
+                    <behaviors:DoDropbehavior />
                 </i:Interaction.Behaviors>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -23,9 +27,16 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Canvas Background="White">
+            <Canvas x:Name="ViewComponentCanvas" Background="White">
                 <i:Interaction.Behaviors>
-                    <behaviors:ViewComponentCanvasDragBehavior />
+                    <behaviors:ViewComponentCanvasDragBehavior>
+                        <behaviors:ViewComponentCanvasDragBehavior.MaskContextMenu>
+                            <ContextMenu>
+                                <MenuItem Click="Delete_Click" Header="删除" />
+                                <MenuItem Click="EditOption_Click" Header="修改配置" />
+                            </ContextMenu>
+                        </behaviors:ViewComponentCanvasDragBehavior.MaskContextMenu>
+                    </behaviors:ViewComponentCanvasDragBehavior>
                 </i:Interaction.Behaviors>
             </Canvas>
         </DockPanel>
