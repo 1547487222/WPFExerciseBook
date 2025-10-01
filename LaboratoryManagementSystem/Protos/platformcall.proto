@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option csharp_namespace = "LaboratoryManagementSystem.Protos";
+
+package platformcall;
+
+// Platform Call Service - For executing platform tasks
+service PlatformCallService {
+  // Execute a platform task
+  rpc ExecutePlatformTask (PlatformTaskRequest) returns (PlatformTaskResponse);
+  
+  // Get platform task status
+  rpc GetTaskStatus (TaskStatusRequest) returns (TaskStatusResponse);
+  
+  // Cancel a running task
+  rpc CancelTask (CancelTaskRequest) returns (CancelTaskResponse);
+}
+
+// Request to execute a platform task
+message PlatformTaskRequest {
+  string task_id = 1;
+  string task_name = 2;
+  repeated ModuleAction module_actions = 3;
+  map<string, string> parameters = 4;
+}
+
+// Module action definition
+message ModuleAction {
+  string module_id = 1;
+  string action_name = 2;
+  map<string, string> action_parameters = 3;
+  int32 sequence = 4;
+}
+
+// Response from platform task execution
+message PlatformTaskResponse {
+  bool success = 1;
+  string message = 2;
+  string execution_id = 3;
+}
+
+// Request for task status
+message TaskStatusRequest {
+  string execution_id = 1;
+}
+
+// Task status response
+message TaskStatusResponse {
+  string execution_id = 1;
+  string status = 2; // "pending", "running", "completed", "failed", "cancelled"
+  int32 progress = 3; // 0-100
+  string current_action = 4;
+  string message = 5;
+}
+
+// Cancel task request
+message CancelTaskRequest {
+  string execution_id = 1;
+}
+
+// Cancel task response
+message CancelTaskResponse {
+  bool success = 1;
+  string message = 2;
+}
