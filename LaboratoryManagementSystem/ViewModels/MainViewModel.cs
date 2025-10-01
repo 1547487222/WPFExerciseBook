@@ -1,6 +1,10 @@
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using LaboratoryManagementSystem.Models;
+using LaboratoryManagementSystem.Services;
 
 namespace LaboratoryManagementSystem.ViewModels
 {
@@ -12,6 +16,8 @@ namespace LaboratoryManagementSystem.ViewModels
         private LaboratoryConfig _laboratoryConfig;
         private object? _selectedMenuItem;
         private object? _currentView;
+        private readonly ILaboratoryConfigService _configService;
+        private readonly string _defaultConfigPath;
 
         public MainViewModel()
         {
@@ -20,8 +26,16 @@ namespace LaboratoryManagementSystem.ViewModels
                 Name = "Laboratory Management System"
             };
 
+            _configService = new JsonConfigurationService();
+            _defaultConfigPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "LaboratoryManagementSystem",
+                "config.json"
+            );
+
             InitializeCommands();
             InitializeSampleData();
+            LoadConfigurationAsync();
         }
 
         public LaboratoryConfig LaboratoryConfig
@@ -54,6 +68,9 @@ namespace LaboratoryManagementSystem.ViewModels
         public ICommand? AddResourceCommand { get; private set; }
         public ICommand? AddPlatformTaskCommand { get; private set; }
         public ICommand? AddProductionLineCommand { get; private set; }
+        public ICommand? SaveConfigCommand { get; private set; }
+        public ICommand? LoadConfigCommand { get; private set; }
+        public ICommand? ExportConfigCommand { get; private set; }
 
         private void InitializeCommands()
         {
@@ -62,6 +79,9 @@ namespace LaboratoryManagementSystem.ViewModels
             AddResourceCommand = new RelayCommand(_ => AddResource());
             AddPlatformTaskCommand = new RelayCommand(_ => AddPlatformTask());
             AddProductionLineCommand = new RelayCommand(_ => AddProductionLine());
+            SaveConfigCommand = new RelayCommand(_ => SaveConfigurationAsync());
+            LoadConfigCommand = new RelayCommand(_ => LoadConfigurationAsync());
+            ExportConfigCommand = new RelayCommand(_ => ExportConfigurationAsync());
         }
 
         private void InitializeSampleData()
@@ -168,6 +188,55 @@ namespace LaboratoryManagementSystem.ViewModels
         {
             // Handle menu item selection and change current view
             // This will be implemented based on the selected menu item
+        }
+
+        private async void SaveConfigurationAsync()
+        {
+            try
+            {
+                await _configService.SaveConfigAsync(LaboratoryConfig, _defaultConfigPath);
+                MessageBox.Show("Configuration saved successfully!", "Save Configuration", 
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save configuration: {ex.Message}", "Save Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void LoadConfigurationAsync()
+        {
+            try
+            {
+                var config = await _configService.LoadConfigAsync(_defaultConfigPath);
+                LaboratoryConfig = config;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load configuration: {ex.Message}", "Load Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void ExportConfigurationAsync()
+        {
+            try
+            {
+                var exportPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    $"LabConfig_{DateTime.Now:yyyyMMdd_HHmmss}.json"
+                );
+
+                await _configService.SaveConfigAsync(LaboratoryConfig, exportPath);
+                MessageBox.Show($"Configuration exported to:\n{exportPath}", "Export Complete", 
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to export configuration: {ex.Message}", "Export Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

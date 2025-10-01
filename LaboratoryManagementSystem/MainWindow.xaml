@@ -83,6 +83,33 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0" Background="{StaticResource ActivityBarBrush}" 
+              Foreground="{StaticResource ForegroundBrush}">
+            <MenuItem Header="_File" Foreground="{StaticResource ForegroundBrush}">
+                <MenuItem Header="_Save Configuration" 
+                          Command="{Binding SaveConfigCommand}"
+                          InputGestureText="Ctrl+S"/>
+                <MenuItem Header="_Load Configuration" 
+                          Command="{Binding LoadConfigCommand}"
+                          InputGestureText="Ctrl+O"/>
+                <MenuItem Header="_Export Configuration..." 
+                          Command="{Binding ExportConfigCommand}"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help" Foreground="{StaticResource ForegroundBrush}">
+                <MenuItem Header="_User Guide" Click="UserGuide_Click"/>
+                <MenuItem Header="_About" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+
+    <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
             <!-- Activity Bar (Icons) -->
             <ColumnDefinition Width="50"/>
@@ -375,5 +402,6 @@
                 </ScrollViewer>
             </Grid>
         </Border>
+    </Grid>
     </Grid>
 </Window>
